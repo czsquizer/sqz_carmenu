@@ -4,6 +4,8 @@ Simple CarControlMenu. You can control vehicle with simple esx_menu_default menu
 ## Requirements
  - esx_menu_default (and things related to)
  - If you would like to use czech language you should add font supporting Czech characters (Open Sans)
+ - es_extended and things related to it
+ - b1g_notify, but you can edit it to 
  
 ## Instalation
  1) Put it into your FiveM resources folder
