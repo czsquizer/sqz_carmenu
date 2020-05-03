@@ -13,3 +13,6 @@ Simple CarControlMenu. You can control vehicle with simple esx_menu_default menu
  3) Go to `client/main.lua` and change locale (you can use `cs` or `en` - maybye some expresions can be wrong, edit it by yourself
  
 **Please, do not sell it as your, but you can edit it, rename it, use parts of code, but not sell it** 
+
+## You can check ass well our Discord: https://discord.gg/FVXAu2F, where a help will be provided :-)
+## Non ESX version (WarMenu version) of this version is on Github as well: https://github.com/czsquizer/sqz_carmenu_warmenu
