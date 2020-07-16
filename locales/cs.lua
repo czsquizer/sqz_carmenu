@@ -21,5 +21,12 @@ Locales['cs'] = {
 	['windowsup'] = 'Všechna okénka nahoru',
 	['interiorlights'] = 'Interiorová světla',
 	['frontlights'] = 'Přední světla',
-	['not_inveh'] = 'Nejsi ve vozidle'
+	['not_inveh'] = 'Nejsi ve vozidle',
+	['not_driver'] = 'Nejsi ridic',
+	['cruiser_off'] = 'Omezovač vypnut',
+	['crusier_on'] = 'Omezovač zapnut maximální rychlost %s km/h',
+	['not_required_speed'] = 'Nelze zapnout omezovač při tak nízké rychlosti, minimální rychlost pro zapnutí omezovače je: %s km/h',
+	['extras'] = 'Vehicle Extras',
+	['forw_crusier_odd'] = 'Tempomat vypnut',
+	['crusier_on'] = 'Tempomat zapnut, aktuální udržovaná rychlost je: %s kmh'
 }

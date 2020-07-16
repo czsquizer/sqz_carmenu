@@ -1,8 +1,10 @@
 local motor = true
 local neons = true
+local cruiserOn = false
+local forwardspeed = false
+local forwardvehiclespeed = 0
+
 ESX = nil
-Config = {}
-Config.Locale                     = 'en'
 
 Citizen.CreateThread(function()
 	while ESX == nil do
@@ -12,32 +14,96 @@ Citizen.CreateThread(function()
 end)
 
 RegisterCommand("carmenu", function (src, args, raw)
-	local player = GetPlayerPed(-1)
+	local player = PlayerPedId()
 	local vehicle = GetVehiclePedIsIn(player,false)	
 	if (IsPedSittingInAnyVehicle(player)) then
-    OpenVehicleControlsMenu()
+   		OpenVehicleControlsMenu()
 	else
-		exports['b1g_notify']:Notify('false', _U('not_inveh'))
+		ESX.ShowNotification(_U('not_inveh'))
 	end
 end, false)
 
 Citizen.CreateThread(function()
 	while true do
 	Citizen.Wait(0)
-		if IsControlJustReleased(1, 344) then
-			local player = GetPlayerPed(-1)
+		if IsControlJustReleased(1, Config.OpenCarMenu) then
+			local player = PlayerPedId()
 			local vehicle = GetVehiclePedIsIn(player,false)	
-				if (IsPedSittingInAnyVehicle(player)) then
-    					OpenVehicleControlsMenu()
-				else
-				exports['b1g_notify']:Notify('false', _U('not_inveh'))
-				end
+			if (IsPedSittingInAnyVehicle(player)) then
+    				OpenVehicleControlsMenu()
+			else
+				ESX.ShowNotification(_U('not_inveh'))
 			end
+		end
+		if IsControlJustReleased(1, Config.CruiserControl) then
+			local player = PlayerPedId()
+			local vehicle = GetVehiclePedIsIn(player,false)
+			if (IsPedSittingInAnyVehicle(player)) and GetPedInVehicleSeat(vehicle, -1) then
+				local vehicleSpeed = GetEntitySpeed(vehicle)
+				local kmh = (vehicleSpeed * 3.6)
+				if cruiserOn then
+					cruiserOn = false
+					SetEntityMaxSpeed(vehicle, GetVehicleHandlingFloat(vehicle,"CHandlingData","fInitialDriveMaxFlatVel"))
+					ESX.ShowNotification(_U('cruiser_off'))
+				elseif not cruiserOn then
+					if kmh >= Config.minimalCrusierSpeed then
+						cruiserOn = true
+						SetEntityMaxSpeed(vehicle, vehicleSpeed)
+						ESX.ShowNotification(_U('crusier_on', ESX.Math.Round(kmh)))
+					else
+						ESX.ShowNotification(_U('not_required_speed', Config.minimalCrusierSpeed))
+					end
+				end
+			else
+				ESX.ShowNotification(_U('not_driver'))
+			end
+		end
+		if IsControlJustReleased(1, Config.FrontCruiseSpeedControl) then
+			local player = PlayerPedId()
+			local vehicle = GetVehiclePedIsIn(player,false)
+			if (IsPedSittingInAnyVehicle(player)) and GetPedInVehicleSeat(vehicle, -1) then
+				local vehicleSpeed = GetEntitySpeed(vehicle)
+				local kmh = (vehicleSpeed * 3.6)
+				if forwardspeed then
+					forwardspeed = false
+					ESX.ShowNotification(_U('forw_crusier_odd'))
+				elseif not forwardspeed then
+					forwardspeed = true
+					forwardvehiclespeed = vehicleSpeed
+					ESX.ShowNotification(_U('crusier_on', kmh))
+				end
+			else
+				ESX.ShowNotification(_U('not_driver'))
+			end
+		end
+		if IsControlPressed(1, 32) or IsControlPressed(1, 33) then
+			if forwardspeed then
+				forwardspeed = false
+				ESX.ShowNotification(_U('forw_crusier_odd'))
+			end
+		end
+	end
+end)
+
+Citizen.CreateThread(function()
+	while true do
+		Wait(500)
+		if forwardspeed then
+			local player = PlayerPedId()
+			local vehicle = GetVehiclePedIsIn(player,false)
+			if not IsEntityInAir(vehicle) then
+				SetVehicleForwardSpeed(vehicle, forwardvehiclespeed)
+			elseif IsEntityInAir(vehicle) then
+				forwardspeed = false
+				ESX.ShowNotification(_U('forw_crusier_odd'))
+			end
+		end
 	end
 end)
 
 function OpenVehicleControlsMenu()
 local elements = {
+	{label = _U('extras'), value = 'extras'},
 	{label = _U('engine'), value = 'motor'},
 	{label = _('open_close'), value = 'open_close'},
 	{label = _('windows'), value = 'windows'},
@@ -45,7 +111,7 @@ local elements = {
 	{label = _U('lights'), value = 'lights'},
 }	
 
-	local player = GetPlayerPed(-1)
+	local player = PlayerPedId()
 	local vehicle = GetVehiclePedIsIn(player,false)
 	ESX.UI.Menu.CloseAll()
 	ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'vehicle_controls', {
@@ -53,7 +119,9 @@ local elements = {
 			align    = 'top-left',
 			elements = elements
 		}, function(data, menu)
-			if data.current.value == 'motor' then
+			if data.current.value == 'extras' then
+				OpenVehicleExtrasMenu()
+			elseif data.current.value == 'motor' then
 				if motor then
 					motor = false
 					SetVehicleEngineOn(vehicle, false, false, false)
@@ -103,7 +171,7 @@ function OtevritZavritAuto()
 	{label = _U('hood'), value = 'hood'},
 	}	
 
-	local player = GetPlayerPed(-1)
+	local player = PlayerPedId()
 	local vehicle = GetVehiclePedIsIn(player,false)
 	ESX.UI.Menu.CloseAll()
 	ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'vehicle_controls_doors', {
@@ -198,7 +266,7 @@ function SpravaOkenek()
 	{label = _U('windowsdown'), value = 'windowsdown'},
 	{label = _U('windowsup'), value = 'windowsup'},
 	}	
-	local player = GetPlayerPed(-1)
+	local player = PlayerPedId()
 	local vehicle = GetVehiclePedIsIn(player,false)
 	ESX.UI.Menu.CloseAll()
 	ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'vehicle_controls_komponents', {
@@ -266,7 +334,7 @@ function LightsMenu()
 	{label = _U('interiorlights'), value = 'interiorlights'},
 	{label = _U('frontlights'), value = 'frontlights'},
 	}	
-	local player = GetPlayerPed(-1)
+	local player = PlayerPedId()
 	local vehicle = GetVehiclePedIsIn(player,false)
 	ESX.UI.Menu.CloseAll()
 	ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'vehicle_controls_lights', {
@@ -294,4 +362,42 @@ function LightsMenu()
 		end, function(data, menu)
 			menu.close()
 		end)
+end
+
+function OpenVehicleExtrasMenu()
+	local ped = PlayerPedId()
+	local vehicle = GetVehiclePedIsIn(ped)
+	local elements = {}
+	for x = 0, 20 do
+		if DoesExtraExist(vehicle, x) then
+			if IsVehicleExtraTurnedOn(vehicle, x) then
+				table.insert(elements, {label = 'EXTRA '..x..' ~y~ON~s~', value = x})
+			elseif not IsVehicleExtraTurnedOn(vehicle, x) then
+				table.insert(elements, {label = 'EXTRA '..x..' ~y~OFF~s~', value = x})
+			end
+		end
+	end
+	ESX.UI.Menu.CloseAll()
+	ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'vehicle_extras', {
+			title    = _U('extras'),
+			align    = 'top-left',
+			elements = elements
+		}, function(data, menu)
+			for x = 0, 20 do
+				if data.current.value == x then
+					if IsVehicleExtraTurnedOn(vehicle, x) then
+						SetVehicleExtra(vehicle, x, 1)
+						ESX.UI.Menu.CloseAll()
+						OpenVehicleExtrasMenu()
+					elseif not IsVehicleExtraTurnedOn(vehicle, x) then
+						SetVehicleExtra(vehicle, x, 0)
+						ESX.UI.Menu.CloseAll()
+						OpenVehicleExtrasMenu()
+					end
+				end
+			end
+		end, function(data, menu)
+			menu.close()
+		end)
+
 end
