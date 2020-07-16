@@ -371,9 +371,9 @@ function OpenVehicleExtrasMenu()
 	for x = 0, 20 do
 		if DoesExtraExist(vehicle, x) then
 			if IsVehicleExtraTurnedOn(vehicle, x) then
-				table.insert(elements, {label = 'EXTRA '..x..' ~y~ON~s~', value = x})
+				table.insert(elements, {label = 'EXTRA '..x.." <FONT color='green'>ON</FONT>", value = x})
 			elseif not IsVehicleExtraTurnedOn(vehicle, x) then
-				table.insert(elements, {label = 'EXTRA '..x..' ~y~OFF~s~', value = x})
+				table.insert(elements, {label = 'EXTRA '..x.." <FONT color='red'>OFF</FONT>", value = x})
 			end
 		end
 	end
