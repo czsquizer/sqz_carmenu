@@ -76,7 +76,7 @@ Citizen.CreateThread(function()
 				ESX.ShowNotification(_U('not_driver'))
 			end
 		end
-		if IsControlPressed(1, 32) or IsControlPressed(1, 33) then
+		if IsControlPressed(1, 32) or IsControlPressed(1, 33) or IsControlPressed(1, 55) then
 			if forwardspeed then
 				forwardspeed = false
 				ESX.ShowNotification(_U('forw_crusier_odd'))
