@@ -113,6 +113,9 @@ local elements = {
 
 	local player = PlayerPedId()
 	local vehicle = GetVehiclePedIsIn(player,false)
+	
+	SetVehicleAutoRepairDisabled(vehicle, true) -- Prevent from autorepair while turning on/off extras
+	
 	ESX.UI.Menu.CloseAll()
 	ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'vehicle_controls', {
 			title    = _U('vehicle_control'),
