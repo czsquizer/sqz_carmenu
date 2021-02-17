@@ -109,13 +109,11 @@ local elements = {
 	{label = _('windows'), value = 'windows'},
 	{label = _U('neons'), value = 'neons'},
 	{label = _U('lights'), value = 'lights'},
+	{label = 'Liveries', value = 'livery'},
 }	
 
 	local player = PlayerPedId()
 	local vehicle = GetVehiclePedIsIn(player,false)
-	
-	SetVehicleAutoRepairDisabled(vehicle, true) -- Prevent from autorepair while turning on/off extras
-	
 	ESX.UI.Menu.CloseAll()
 	ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'vehicle_controls', {
 			title    = _U('vehicle_control'),
@@ -124,6 +122,8 @@ local elements = {
 		}, function(data, menu)
 			if data.current.value == 'extras' then
 				OpenVehicleExtrasMenu()
+			elseif data.current.value == 'livery' then
+				LiveriesMenu()
 			elseif data.current.value == 'motor' then
 				if motor then
 					motor = false
@@ -402,5 +402,36 @@ function OpenVehicleExtrasMenu()
 		end, function(data, menu)
 			menu.close()
 		end)
+
+end
+
+function LiveriesMenu()
+
+	local ped = PlayerPedId()
+	local vehicle = GetVehiclePedIsIn(ped)
+	local elements = {}
+
+	for x = 0, GetVehicleLiveryCount(vehicle) do
+		table.insert(elements, {label = 'Livery '..x, value = x})
+	end
+
+	ESX.UI.Menu.CloseAll()
+	ESX.UI.Menu.Open('default', GetCurrentResourceName(), 'vehicle_liveries', {
+			title    = 'Liveries',
+			align    = 'top-left',
+			elements = elements
+		}, function(data, menu)
+			for x = 0, GetVehicleLiveryCount(vehicle) do
+				if data.current.value == x then
+
+					SetVehicleLivery(vehicle, x)
+
+				end
+			end
+		end, function(data, menu)
+			menu.close()
+	end, function(data, menu)
+		SetVehicleLivery(vehicle, data.current.value)
+	end)
 
 end
