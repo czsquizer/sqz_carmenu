@@ -4,7 +4,7 @@ game 'gta5'
 
 description 'SQZ Car Control'
 
-version '1.0.4'
+version '1.0.3'
 
 client_scripts {
 	'@es_extended/locale.lua',
@@ -12,4 +12,8 @@ client_scripts {
 	'client/main.lua',
 	'locales/cs.lua',
 	'locales/en.lua'
+}
+
+server_scripts {
+	'config.lua'
 }
