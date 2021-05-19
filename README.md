@@ -34,7 +34,7 @@ In case of any issues, let me know, you have 2 ways. You can create a GitHub iss
  - es_extended and things related to it
 
 # Other Scripts
-* [sqz_unijob](https://forum.cfx.re/t/esx-sqz-unijob-advanced-system-for-easy-adding-jobs/2100467) - Script for adding multiple jobs into 1 scritp just by edditing config
+* [sqz_unijob](https://forum.cfx.re/t/esx-sqz-unijob-advanced-system-for-easy-adding-jobs/2100467) - Script for adding multiple jobs into 1 script just by edditing config
 * [sqz_drugs](https://forum.cfx.re/t/esx-sqz-drugs-advanced-drug-system/2167691) - Complete system for drugs, planting, harvesting, watering, processing and dealing drugs
 * [scb_rpmenu](https://forum.cfx.re/t/esx-scb-rpmenu-facilitates-all-works-player-menu-admin-menu/2110753) - Complete RP menu with all features you could need for your RP server
 * [sqz_switchjob](https://github.com/czsquizer/switchjob) - Script for switching and having multiple jobs
@@ -45,6 +45,7 @@ In case of any issues, let me know, you have 2 ways. You can create a GitHub iss
 
 # Visit Squizer's "social media"
 * [Tebex](https://sqz.tebex.io/)
+* [Page](https://squizer.cz)
 * [Cfx.re Forum](https://forum.cfx.re/u/squizer/)
 * [Discord](https://discord.gg/FVXAu2F)
 * [GitHub](https://github.com/czsquizer/)
