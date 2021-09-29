@@ -4,9 +4,6 @@ Simple CarControlMenu. You can control vehicle with simple esx_menu_default menu
 __You can read the docs here__
 [![Docs](https://img.shields.io/badge/docs-passing-brightgreen)](https://docs.squizer.cz)
 
-__You can support me__
-[![PayPal](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/donate?hosted_button_id=M4KV4Q9LDWEBC) 
-
 # Features 
 - Cruise Control
 - Speed Limiter
