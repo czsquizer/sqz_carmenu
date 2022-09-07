@@ -22,6 +22,7 @@ Locales['en'] = {
 	['interiorlights'] = 'Interior Lights',
 	['frontlights'] = 'Front Lights',
 	['not_inveh'] = 'You are not in a vehicle',
+	['dont_have_job'] = 'You do not have the job you need',
 	['not_driver'] = 'You are not vehicle driver',
 	['cruiser_off'] = 'Crusier has been turned OFF',
 	['crusier_on'] = 'Cruiser set ON, max speed %s km/h',
