@@ -4,15 +4,6 @@ local cruiserOn = false
 local forwardspeed = false
 local forwardvehiclespeed = 0
 
-ESX = nil
-
-Citizen.CreateThread(function()
-	while ESX == nil do
-		TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
-		Citizen.Wait(0)
-	end
-end)
-
 RegisterCommand("carmenu", function (src, args, raw)
 	local player = PlayerPedId()
 	local vehicle = GetVehiclePedIsIn(player,false)	
