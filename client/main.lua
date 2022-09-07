@@ -3,6 +3,7 @@ local neons = true
 local cruiserOn = false
 local forwardspeed = false
 local forwardvehiclespeed = 0
+local has_notify_job = false
 
 RegisterNetEvent('esx:setJob')
 AddEventHandler('esx:setJob', function(job)
@@ -18,7 +19,10 @@ RegisterCommand("carmenu", function (src, args, raw)
 				if ESX.PlayerData.job and ESX.PlayerData.job.name == v then
    					OpenVehicleControlsMenu()
 				else
-					ESX.ShowNotification(_U('dont_have_job'))
+					if not has_notify_job then
+						has_notify_job = true
+						ESX.ShowNotification(_U('dont_have_job'))
+					end
 				end
 			end
 		else
@@ -26,6 +30,9 @@ RegisterCommand("carmenu", function (src, args, raw)
 		end
 	else
 		ESX.ShowNotification(_U('not_inveh'))
+	end
+	if has_notify_job then
+		Wait(500)
 	end
 end, false)
 
@@ -41,7 +48,10 @@ Citizen.CreateThread(function()
 						if ESX.PlayerData.job and ESX.PlayerData.job.name == v then
    							OpenVehicleControlsMenu()
 						else
-							ESX.ShowNotification(_U('dont_have_job'))
+							if not has_notify_job then
+								has_notify_job = true
+								ESX.ShowNotification(_U('dont_have_job'))
+							end
 						end
 					end
 				else
@@ -74,7 +84,10 @@ Citizen.CreateThread(function()
 								end
 							end
 						else
-							ESX.ShowNotification(_U('dont_have_job'))
+							if not has_notify_job then
+								has_notify_job = true
+								ESX.ShowNotification(_U('dont_have_job'))
+							end
 						end
 					end
 				else
@@ -116,7 +129,10 @@ Citizen.CreateThread(function()
 								ESX.ShowNotification(_U('crusier_on', kmh))
 							end
 						else
-							ESX.ShowNotification(_U('not_driver'))
+							if not has_notify_job then
+								has_notify_job = true
+								ESX.ShowNotification(_U('dont_have_job'))
+							end
 						end
 					end
 				else
@@ -140,6 +156,10 @@ Citizen.CreateThread(function()
 				forwardspeed = false
 				ESX.ShowNotification(_U('forw_crusier_odd'))
 			end
+		end
+		if has_notify_job then
+			Wait(500)
+			has_notify_job = false
 		end
 	end
 end)
