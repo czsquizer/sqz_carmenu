@@ -6,7 +6,7 @@ Config.OpenCarMenu = 344 -- Key to open Main (control menu)
 Config.minimalCrusierSpeed = 10 -- Minimal speed (in kmh) to turn Cruiser On
 Config.OnlyJob = false -- Job restriction
 Config.Jobs = { -- If you have job restriction, this is the jobs they would have access
-  police,
-  mechanic,
-  sheriff
+  'police',
+  'mechanic',
+  'sheriff'
 }
