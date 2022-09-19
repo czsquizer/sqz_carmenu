@@ -5,9 +5,21 @@ local forwardspeed = false
 local forwardvehiclespeed = 0
 local has_notify_job = false
 
+Citizen.CreateThread(function()
+ 
+    while not ESX.GetPlayerData().job do
+        Wait(100)
+    end
+
+    ESX.PlayerData = ESX.GetPlayerData()
+
+    Wait(100)
+end)
+
 RegisterNetEvent('esx:setJob')
 AddEventHandler('esx:setJob', function(job)
-	ESX.PlayerData.job = job
+    Wait(100)
+    ESX.PlayerData.job = job
 end)
 
 RegisterCommand("carmenu", function (src, args, raw)
