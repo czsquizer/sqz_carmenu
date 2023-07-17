@@ -1,8 +1,3 @@
-# <center>Quality hosting with preconfigured and DDoS protected cheap FiveM servers. Use link: https://zap-hosting.com/sqzscripts or a code when processing your order: `squizer-8709`.</center>
-[<img src="https://zap-hosting.com/interface/download/images.php?type=affiliate&id=202971">](https://zap-hosting.com/sqzscripts)
-
----
-
 # SQZ_CARMENU SCRIPT
 Simple CarControlMenu. You can control vehicle with simple esx_menu_default menu. There are possibilities such as turn off engine, wnidows and more.
 
