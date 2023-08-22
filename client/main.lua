@@ -3,23 +3,48 @@ local neons = true
 local cruiserOn = false
 local forwardspeed = false
 local forwardvehiclespeed = 0
-
-ESX = nil
+local has_notify_job = false
 
 Citizen.CreateThread(function()
-	while ESX == nil do
-		TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
-		Citizen.Wait(0)
-	end
+ 
+    while not ESX.GetPlayerData().job do
+        Wait(100)
+    end
+
+    ESX.PlayerData = ESX.GetPlayerData()
+
+    Wait(100)
+end)
+
+RegisterNetEvent('esx:setJob')
+AddEventHandler('esx:setJob', function(job)
+    Wait(100)
+    ESX.PlayerData.job = job
 end)
 
 RegisterCommand("carmenu", function (src, args, raw)
 	local player = PlayerPedId()
 	local vehicle = GetVehiclePedIsIn(player,false)	
 	if (IsPedSittingInAnyVehicle(player)) then
-   		OpenVehicleControlsMenu()
+		if Config.OnlyJob then
+			for k, v in pairs(Config.Jobs) do
+				if ESX.PlayerData.job and ESX.PlayerData.job.name == v then
+   					OpenVehicleControlsMenu()
+				else
+					if not has_notify_job then
+						has_notify_job = true
+						ESX.ShowNotification(_U('dont_have_job'))
+					end
+				end
+			end
+		else
+			OpenVehicleControlsMenu()
+		end
 	else
 		ESX.ShowNotification(_U('not_inveh'))
+	end
+	if has_notify_job then
+		Wait(500)
 	end
 end, false)
 
@@ -30,7 +55,20 @@ Citizen.CreateThread(function()
 			local player = PlayerPedId()
 			local vehicle = GetVehiclePedIsIn(player,false)	
 			if (IsPedSittingInAnyVehicle(player)) then
-    				OpenVehicleControlsMenu()
+    				if Config.OnlyJob then
+					for k, v in pairs(Config.Jobs) do
+						if ESX.PlayerData.job and ESX.PlayerData.job.name == v then
+   							OpenVehicleControlsMenu()
+						else
+							if not has_notify_job then
+								has_notify_job = true
+								ESX.ShowNotification(_U('dont_have_job'))
+							end
+						end
+					end
+				else
+					OpenVehicleControlsMenu()
+				end
 			else
 				ESX.ShowNotification(_U('not_inveh'))
 			end
@@ -39,19 +77,46 @@ Citizen.CreateThread(function()
 			local player = PlayerPedId()
 			local vehicle = GetVehiclePedIsIn(player,false)
 			if (IsPedSittingInAnyVehicle(player)) and GetPedInVehicleSeat(vehicle, -1) then
-				local vehicleSpeed = GetEntitySpeed(vehicle)
-				local kmh = (vehicleSpeed * 3.6)
-				if cruiserOn then
-					cruiserOn = false
-					SetEntityMaxSpeed(vehicle, GetVehicleHandlingFloat(vehicle,"CHandlingData","fInitialDriveMaxFlatVel"))
-					ESX.ShowNotification(_U('cruiser_off'))
-				elseif not cruiserOn then
-					if kmh >= Config.minimalCrusierSpeed then
-						cruiserOn = true
-						SetEntityMaxSpeed(vehicle, vehicleSpeed)
-						ESX.ShowNotification(_U('crusier_on', ESX.Math.Round(kmh)))
-					else
-						ESX.ShowNotification(_U('not_required_speed', Config.minimalCrusierSpeed))
+				if Config.OnlyJob then
+					for k, v in pairs(Config.Jobs) do
+						if ESX.PlayerData.job and ESX.PlayerData.job.name == v then
+							local vehicleSpeed = GetEntitySpeed(vehicle)
+							local kmh = (vehicleSpeed * 3.6)
+							if cruiserOn then
+								cruiserOn = false
+								SetEntityMaxSpeed(vehicle, GetVehicleHandlingFloat(vehicle,"CHandlingData","fInitialDriveMaxFlatVel"))
+								ESX.ShowNotification(_U('cruiser_off'))
+							elseif not cruiserOn then
+								if kmh >= Config.minimalCrusierSpeed then
+									cruiserOn = true
+									SetEntityMaxSpeed(vehicle, vehicleSpeed)
+									ESX.ShowNotification(_U('crusier_on', ESX.Math.Round(kmh)))
+								else
+									ESX.ShowNotification(_U('not_required_speed', Config.minimalCrusierSpeed))
+								end
+							end
+						else
+							if not has_notify_job then
+								has_notify_job = true
+								ESX.ShowNotification(_U('dont_have_job'))
+							end
+						end
+					end
+				else
+					local vehicleSpeed = GetEntitySpeed(vehicle)
+					local kmh = (vehicleSpeed * 3.6)
+					if cruiserOn then
+						cruiserOn = false
+						SetEntityMaxSpeed(vehicle, GetVehicleHandlingFloat(vehicle,"CHandlingData","fInitialDriveMaxFlatVel"))
+						ESX.ShowNotification(_U('cruiser_off'))
+					elseif not cruiserOn then
+						if kmh >= Config.minimalCrusierSpeed then
+							cruiserOn = true
+							SetEntityMaxSpeed(vehicle, vehicleSpeed)
+							ESX.ShowNotification(_U('crusier_on', ESX.Math.Round(kmh)))
+						else
+							ESX.ShowNotification(_U('not_required_speed', Config.minimalCrusierSpeed))
+						end
 					end
 				end
 			else
@@ -62,15 +127,37 @@ Citizen.CreateThread(function()
 			local player = PlayerPedId()
 			local vehicle = GetVehiclePedIsIn(player,false)
 			if (IsPedSittingInAnyVehicle(player)) and GetPedInVehicleSeat(vehicle, -1) then
-				local vehicleSpeed = GetEntitySpeed(vehicle)
-				local kmh = (vehicleSpeed * 3.6)
-				if forwardspeed then
-					forwardspeed = false
-					ESX.ShowNotification(_U('forw_crusier_odd'))
-				elseif not forwardspeed then
-					forwardspeed = true
-					forwardvehiclespeed = vehicleSpeed
-					ESX.ShowNotification(_U('crusier_on', kmh))
+				if Config.OnlyJob then
+					for k, v in pairs(Config.Jobs) do
+						if ESX.PlayerData.job and ESX.PlayerData.job.name == v then
+							local vehicleSpeed = GetEntitySpeed(vehicle)
+							local kmh = (vehicleSpeed * 3.6)
+							if forwardspeed then
+								forwardspeed = false
+								ESX.ShowNotification(_U('forw_crusier_odd'))
+							elseif not forwardspeed then
+								forwardspeed = true
+								forwardvehiclespeed = vehicleSpeed
+								ESX.ShowNotification(_U('crusier_on', kmh))
+							end
+						else
+							if not has_notify_job then
+								has_notify_job = true
+								ESX.ShowNotification(_U('dont_have_job'))
+							end
+						end
+					end
+				else
+					local vehicleSpeed = GetEntitySpeed(vehicle)
+					local kmh = (vehicleSpeed * 3.6)
+					if forwardspeed then
+						forwardspeed = false
+						ESX.ShowNotification(_U('forw_crusier_odd'))
+					elseif not forwardspeed then
+						forwardspeed = true
+						forwardvehiclespeed = vehicleSpeed
+						ESX.ShowNotification(_U('crusier_on', kmh))
+					end
 				end
 			else
 				ESX.ShowNotification(_U('not_driver'))
@@ -81,6 +168,10 @@ Citizen.CreateThread(function()
 				forwardspeed = false
 				ESX.ShowNotification(_U('forw_crusier_odd'))
 			end
+		end
+		if has_notify_job then
+			Wait(500)
+			has_notify_job = false
 		end
 	end
 end)

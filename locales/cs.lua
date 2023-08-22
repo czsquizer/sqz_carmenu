@@ -22,6 +22,7 @@ Locales['cs'] = {
 	['interiorlights'] = 'Interiorová světla',
 	['frontlights'] = 'Přední světla',
 	['not_inveh'] = 'Nejsi ve vozidle',
+	['dont_have_job'] = 'Nemáš potřebnou práci',
 	['not_driver'] = 'Nejsi ridic',
 	['cruiser_off'] = 'Omezovač vypnut',
 	['crusier_on'] = 'Omezovač zapnut maximální rychlost %s km/h',
